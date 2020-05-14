@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 13, 2020 at 05:10 PM
+-- Generation Time: May 14, 2020 at 10:28 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.5
 
@@ -32,6 +32,14 @@ CREATE TABLE `attributes` (
   `name` varchar(255) NOT NULL,
   `active` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `attributes`
+--
+
+INSERT INTO `attributes` (`id`, `name`, `active`) VALUES
+(2, 'Color', 1),
+(3, 'Size', 1);
 
 -- --------------------------------------------------------
 
@@ -68,15 +76,16 @@ INSERT INTO `attribute_value` (`id`, `value`, `attribute_parent_id`) VALUES
 CREATE TABLE `brands` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `active` int(11) NOT NULL
+  `active` int(11) NOT NULL,
+  `company_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `brands`
 --
 
-INSERT INTO `brands` (`id`, `name`, `active`) VALUES
-(4, 'ABC Inc.', 1);
+INSERT INTO `brands` (`id`, `name`, `active`, `company_id`) VALUES
+(4, 'ABC Inc.', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -154,14 +163,14 @@ CREATE TABLE `orders` (
   `customer_name` varchar(255) NOT NULL,
   `customer_address` varchar(255) NOT NULL,
   `customer_phone` varchar(255) NOT NULL,
-  `date_time` varchar(255) NOT NULL,
+  `date_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `gross_amount` varchar(255) NOT NULL,
   `service_charge_rate` varchar(255) NOT NULL,
   `service_charge` varchar(255) NOT NULL,
   `vat_charge_rate` varchar(255) NOT NULL,
   `vat_charge` varchar(255) NOT NULL,
-  `net_amount` varchar(255) NOT NULL,
-  `discount` varchar(255) NOT NULL,
+  `net_amount` int(100) NOT NULL,
+  `discount` int(50) NOT NULL,
   `paid_status` int(11) NOT NULL,
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -176,9 +185,9 @@ CREATE TABLE `orders_item` (
   `id` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
-  `qty` varchar(255) NOT NULL,
+  `qty` int(50) NOT NULL,
   `rate` varchar(255) NOT NULL,
-  `amount` varchar(255) NOT NULL
+  `amount` int(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -191,13 +200,13 @@ CREATE TABLE `products` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `sku` varchar(255) NOT NULL,
-  `price` varchar(255) NOT NULL,
-  `qty` varchar(255) NOT NULL,
+  `price` int(255) NOT NULL,
+  `qty` int(50) NOT NULL,
   `image` text NOT NULL,
   `description` text NOT NULL,
-  `attribute_value_id` text DEFAULT NULL,
-  `brand_id` text NOT NULL,
-  `category_id` text NOT NULL,
+  `attribute_value_id` int(11) DEFAULT NULL,
+  `brand_id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL,
   `store_id` int(11) NOT NULL,
   `availability` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -211,8 +220,15 @@ CREATE TABLE `products` (
 CREATE TABLE `stores` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `active` int(11) NOT NULL
+  `active` varchar(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `stores`
+--
+
+INSERT INTO `stores` (`id`, `name`, `active`) VALUES
+(3, 'Toko Jaya Abadi', 'active');
 
 -- --------------------------------------------------------
 
@@ -228,7 +244,7 @@ CREATE TABLE `users` (
   `firstname` varchar(255) NOT NULL,
   `lastname` varchar(255) NOT NULL,
   `phone` varchar(255) NOT NULL,
-  `gender` int(11) NOT NULL
+  `gender` varchar(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -236,7 +252,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `firstname`, `lastname`, `phone`, `gender`) VALUES
-(1, 'admin', '$2y$10$ZrBk2zWOLhPAaOhncDBJv.pKAfhFYywahFQXY4NXDmhOcaRtLdAfS', 'admin@admin.com', 'admin', 'a', '12345678910', 1);
+(1, 'admin', '$2y$10$ZrBk2zWOLhPAaOhncDBJv.pKAfhFYywahFQXY4NXDmhOcaRtLdAfS', 'admin@admin.com', 'admin', 'a', '12345678910', 'Male');
 
 -- --------------------------------------------------------
 
@@ -271,13 +287,15 @@ ALTER TABLE `attributes`
 -- Indexes for table `attribute_value`
 --
 ALTER TABLE `attribute_value`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `attr_parent` (`attribute_parent_id`);
 
 --
 -- Indexes for table `brands`
 --
 ALTER TABLE `brands`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `br_comp` (`company_id`);
 
 --
 -- Indexes for table `categories`
@@ -301,19 +319,26 @@ ALTER TABLE `groups`
 -- Indexes for table `orders`
 --
 ALTER TABLE `orders`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `order_user` (`user_id`);
 
 --
 -- Indexes for table `orders_item`
 --
 ALTER TABLE `orders_item`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `order_id` (`order_id`),
+  ADD KEY `product_id` (`product_id`);
 
 --
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `pr_store` (`store_id`),
+  ADD KEY `pr_brand` (`brand_id`),
+  ADD KEY `pr_category` (`category_id`),
+  ADD KEY `pr_attribute` (`attribute_value_id`);
 
 --
 -- Indexes for table `stores`
@@ -331,7 +356,9 @@ ALTER TABLE `users`
 -- Indexes for table `user_group`
 --
 ALTER TABLE `user_group`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user` (`user_id`),
+  ADD KEY `group` (`group_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -395,19 +422,64 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `stores`
 --
 ALTER TABLE `stores`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `user_group`
 --
 ALTER TABLE `user_group`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `attribute_value`
+--
+ALTER TABLE `attribute_value`
+  ADD CONSTRAINT `attr_parent` FOREIGN KEY (`attribute_parent_id`) REFERENCES `attributes` (`id`) ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `brands`
+--
+ALTER TABLE `brands`
+  ADD CONSTRAINT `br_comp` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`);
+
+--
+-- Constraints for table `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `order_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `orders_item`
+--
+ALTER TABLE `orders_item`
+  ADD CONSTRAINT `order_id` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
+  ADD CONSTRAINT `product_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
+
+--
+-- Constraints for table `products`
+--
+ALTER TABLE `products`
+  ADD CONSTRAINT `pr_attribute` FOREIGN KEY (`attribute_value_id`) REFERENCES `attribute_value` (`id`),
+  ADD CONSTRAINT `pr_brand` FOREIGN KEY (`brand_id`) REFERENCES `brands` (`id`),
+  ADD CONSTRAINT `pr_category` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE NO ACTION,
+  ADD CONSTRAINT `pr_store` FOREIGN KEY (`store_id`) REFERENCES `stores` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `user_group`
+--
+ALTER TABLE `user_group`
+  ADD CONSTRAINT `group` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`),
+  ADD CONSTRAINT `user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
