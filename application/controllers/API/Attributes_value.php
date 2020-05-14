@@ -5,36 +5,31 @@ require APPPATH . '/libraries/REST_Controller.php';
 
 use Restserver\Libraries\REST_Controller;
 
-class Users extends REST_Controller
+class Attributes_value extends REST_Controller
 {
 
-	// GET : Menampilkan seluruh Data
+	// GET
 	function index_get()
 	{
 		$data = $this->get('data');
 		if ($data == '') {
-			$users = $this->db->get('users')->result();
+			$atr = $this->db->get('attribute_value')->result();
 		} else {
 			$this->db->where('id', $data);
-			$this->db->or_where('username', $data);
-			$users = $this->db->get('absensi')->result();
+			$this->db->or_where('value', $data);
+			$atr = $this->db->get('attribute_value')->result();
 		}
-		$this->response($users, 200);
+		$this->response($atr, 200);
 	}
 
 	// POST : Menambahkan Data
 	function index_post()
 	{
 		$data = array(
-			'username' => $this->post('username'),
-			'password' => $this->post('password'),
-			'email' => $this->post('email'),
-			'firstname' => $this->post('firstname'),
-			'lastname' => $this->post('lastname'),
-			'phone' => $this->post('phone'),
-			'gender' => $this->post('gender')
+			'value' => $this->post('value'),
+			'attribute_parent_id' => $this->post('attribute_parent_id')
 		);
-		$insert = $this->db->insert('users', $data);
+		$insert = $this->db->insert('attribute_value', $data);
 		if ($insert) {
 			$this->response($data, 200);
 		} else {
@@ -48,16 +43,11 @@ class Users extends REST_Controller
 		$id = $this->put('id');
 		$data = array(
 			'id' => $this->put('id'),
-			'username' => $this->put('username'),
-			'password' => $this->put('password'),
-			'email' => $this->put('email'),
-			'firstname' => $this->put('firstname'),
-			'lastname' => $this->put('lastname'),
-			'phone' => $this->put('phone'),
-			'gender' => $this->put('gender')
+			'value' => $this->put('value'),
+			'attribute_parent_id' => $this->put('attribute_parent_id')
 		);
 		$this->db->where('id', $id);
-		$update = $this->db->update('users', $data);
+		$update = $this->db->update('attribute_value', $data);
 		if ($update) {
 			$this->response($data, 200);
 		} else {
@@ -70,7 +60,7 @@ class Users extends REST_Controller
 	{
 		$id = $this->delete('id');
 		$this->db->where('id', $id);
-		$delete = $this->db->delete('users');
+		$delete = $this->db->delete('attribute_value');
 		if ($delete) {
 			$this->response(array('status' => 'success'), 201);
 		} else {
@@ -80,4 +70,4 @@ class Users extends REST_Controller
 }
 
 
-/* End of file Users.php */
+/* End of file Attributes_value.php */

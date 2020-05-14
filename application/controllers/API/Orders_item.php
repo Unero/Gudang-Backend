@@ -5,36 +5,35 @@ require APPPATH . '/libraries/REST_Controller.php';
 
 use Restserver\Libraries\REST_Controller;
 
-class Users extends REST_Controller
+class Orders_item extends REST_Controller
 {
 
-	// GET : Menampilkan seluruh Data
+	// GET
 	function index_get()
 	{
 		$data = $this->get('data');
 		if ($data == '') {
-			$users = $this->db->get('users')->result();
+			$orders = $this->db->get('orders_item')->result();
 		} else {
 			$this->db->where('id', $data);
-			$this->db->or_where('username', $data);
-			$users = $this->db->get('absensi')->result();
+			$this->db->or_where('order_id', $data);
+			$this->db->or_where('product_id', $data);
+			$orders = $this->db->get('orders_item')->result();
 		}
-		$this->response($users, 200);
+		$this->response($orders, 200);
 	}
 
 	// POST : Menambahkan Data
 	function index_post()
 	{
 		$data = array(
-			'username' => $this->post('username'),
-			'password' => $this->post('password'),
-			'email' => $this->post('email'),
-			'firstname' => $this->post('firstname'),
-			'lastname' => $this->post('lastname'),
-			'phone' => $this->post('phone'),
-			'gender' => $this->post('gender')
+			'order_id' => $this->post('order_id'),
+			'product_id' => $this->post('product_id'),
+			'qty' => $this->post('qty'),
+			'rate' => $this->post('rate'),
+			'ammount' => $this->post('ammount')
 		);
-		$insert = $this->db->insert('users', $data);
+		$insert = $this->db->insert('orders_item', $data);
 		if ($insert) {
 			$this->response($data, 200);
 		} else {
@@ -48,16 +47,14 @@ class Users extends REST_Controller
 		$id = $this->put('id');
 		$data = array(
 			'id' => $this->put('id'),
-			'username' => $this->put('username'),
-			'password' => $this->put('password'),
-			'email' => $this->put('email'),
-			'firstname' => $this->put('firstname'),
-			'lastname' => $this->put('lastname'),
-			'phone' => $this->put('phone'),
-			'gender' => $this->put('gender')
+			'order_id' => $this->put('order_id'),
+			'product_id' => $this->put('product_id'),
+			'qty' => $this->put('qty'),
+			'rate' => $this->put('rate'),
+			'ammount' => $this->put('ammount')
 		);
 		$this->db->where('id', $id);
-		$update = $this->db->update('users', $data);
+		$update = $this->db->update('orders_item', $data);
 		if ($update) {
 			$this->response($data, 200);
 		} else {
@@ -70,7 +67,7 @@ class Users extends REST_Controller
 	{
 		$id = $this->delete('id');
 		$this->db->where('id', $id);
-		$delete = $this->db->delete('users');
+		$delete = $this->db->delete('orders_item');
 		if ($delete) {
 			$this->response(array('status' => 'success'), 201);
 		} else {
@@ -80,4 +77,4 @@ class Users extends REST_Controller
 }
 
 
-/* End of file Users.php */
+/* End of file Orders_item.php */

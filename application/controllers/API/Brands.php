@@ -17,7 +17,53 @@ class Brands extends REST_Controller {
             $brands = $this->db->get('brands')->result();
         }
         $this->response($brands, 200);
-    }
+	}
+	
+	// POST : Menambahkan Data
+	function index_post()
+	{
+		$data = array(
+			'name' => $this->post('name'),
+			'active' => $this->post('active')
+		);
+		$insert = $this->db->insert('brands', $data);
+		if ($insert) {
+			$this->response($data, 200);
+		} else {
+			$this->response(array('status' => 'fail', 502));
+		}
+	}
+
+	// PUT: Mengupdate data
+	function index_put()
+	{
+		$id = $this->put('id');
+		$data = array(
+			'id' => $this->put('id'),
+			'name' => $this->put('name'),
+			'active' => $this->put('active')
+		);
+		$this->db->where('id', $id);
+		$update = $this->db->update('brands', $data);
+		if ($update) {
+			$this->response($data, 200);
+		} else {
+			$this->response(array('status' => 'fail', 502));
+		}
+	}
+
+	// DELETE: Menghapus data
+	function index_delete()
+	{
+		$id = $this->delete('id');
+		$this->db->where('id', $id);
+		$delete = $this->db->delete('brands');
+		if ($delete) {
+			$this->response(array('status' => 'success'), 201);
+		} else {
+			$this->response(array('status' => 'fail', 502));
+		}
+	}
 }
 
 

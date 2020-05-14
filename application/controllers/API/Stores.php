@@ -18,7 +18,53 @@ class Stores extends REST_Controller {
             $stores = $this->db->get('stores')->result();
         }
         $this->response($stores, 200);
-    }
+	}
+	
+	// POST : Menambahkan Data
+	function index_post()
+	{
+		$data = array(
+			'name' => $this->post('name'),
+			'active' => $this->post('active')
+		);
+		$insert = $this->db->insert('stores', $data);
+		if ($insert) {
+			$this->response($data, 200);
+		} else {
+			$this->response(array('status' => 'fail', 502));
+		}
+	}
+
+	// PUT: Mengupdate data
+	function index_put()
+	{
+		$id = $this->put('id');
+		$data = array(
+			'id' => $this->put('id'),
+			'name' => $this->put('name'),
+			'active' => $this->put('active')
+		);
+		$this->db->where('id', $id);
+		$update = $this->db->update('stores', $data);
+		if ($update) {
+			$this->response($data, 200);
+		} else {
+			$this->response(array('status' => 'fail', 502));
+		}
+	}
+
+	// DELETE: Menghapus data
+	function index_delete()
+	{
+		$id = $this->delete('id');
+		$this->db->where('id', $id);
+		$delete = $this->db->delete('stores');
+		if ($delete) {
+			$this->response(array('status' => 'success'), 201);
+		} else {
+			$this->response(array('status' => 'fail', 502));
+		}
+	}
 }
 
 
