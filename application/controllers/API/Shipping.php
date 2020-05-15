@@ -5,7 +5,7 @@ require APPPATH . '/libraries/REST_Controller.php';
 
 use Restserver\Libraries\REST_Controller;
 
-class Products extends REST_Controller
+class Shipping extends REST_Controller
 {
 
 	// GET
@@ -13,12 +13,10 @@ class Products extends REST_Controller
 	{
 		$data = $this->get('data');
 		if ($data == '') {
-			$products = $this->db->get('products')->result();
+			$products = $this->db->get('shipping')->result();
 		} else {
 			$this->db->where('id', $data);
-			$this->db->or_where('name', $data);
-			$this->db->or_where('sku', $data);
-			$products = $this->db->get('products')->result();
+			$products = $this->db->get('shipping')->result();
 		}
 		$this->response($products, 200);
 	}
@@ -27,19 +25,14 @@ class Products extends REST_Controller
 	function index_post()
 	{
 		$data = array(
-			'name' => $this->post('name'),
-			'sku' => $this->post('sku'),
-			'price' => $this->post('price'),
+			'item_id' => $this->post('item_id'),
 			'qty' => $this->post('qty'),
-			'image' => $this->post('image'),
-			'description' => $this->post('description'),
-			'attribute_value_id' => $this->post('attribute_val'),
-			'brand_id' => $this->post('brand_id'),
-			'category_id' => $this->post('category_id'),
+			'type' => $this->post('type'),
 			'store_id' => $this->post('store_id'),
-			'availability' => $this->post('availability')
+			'user_id' => $this->post('user_id'),
+			'time' => $this->post('time')
 		);
-		$insert = $this->db->insert('products', $data);
+		$insert = $this->db->insert('shipping', $data);
 		if ($insert) {
 			$this->response($data, 200);
 		} else {
@@ -53,20 +46,15 @@ class Products extends REST_Controller
 		$id = $this->put('id');
 		$data = array(
 			'id' => $this->put('id'),
-			'name' => $this->put('name'),
-			'sku' => $this->put('sku'),
-			'price' => $this->put('price'),
+			'item_id' => $this->put('item_id'),
 			'qty' => $this->put('qty'),
-			'image' => $this->put('image'),
-			'description' => $this->put('description'),
-			'attribute_value_id' => $this->put('attribute_val'),
-			'brand_id' => $this->put('brand_id'),
-			'category_id' => $this->put('category_id'),
+			'type' => $this->put('type'),
 			'store_id' => $this->put('store_id'),
-			'availability' => $this->put('availability')
+			'user_id' => $this->put('user_id'),
+			'time' => $this->put('time')
 		);
 		$this->db->where('id', $id);
-		$update = $this->db->update('products', $data);
+		$update = $this->db->update('shipping', $data);
 		if ($update) {
 			$this->response($data, 200);
 		} else {
@@ -79,7 +67,7 @@ class Products extends REST_Controller
 	{
 		$id = $this->delete('id');
 		$this->db->where('id', $id);
-		$delete = $this->db->delete('products');
+		$delete = $this->db->delete('shipping');
 		if ($delete) {
 			$this->response(array('status' => 'success'), 201);
 		} else {

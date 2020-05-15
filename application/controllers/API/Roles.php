@@ -5,7 +5,7 @@ require APPPATH . '/libraries/REST_Controller.php';
 
 use Restserver\Libraries\REST_Controller;
 
-class Orders_item extends REST_Controller
+class Roles extends REST_Controller
 {
 
 	// GET
@@ -13,27 +13,22 @@ class Orders_item extends REST_Controller
 	{
 		$data = $this->get('data');
 		if ($data == '') {
-			$orders = $this->db->get('orders_item')->result();
+			$roles = $this->db->get('roles')->result();
 		} else {
 			$this->db->where('id', $data);
-			$this->db->or_where('order_id', $data);
-			$this->db->or_where('product_id', $data);
-			$orders = $this->db->get('orders_item')->result();
+			$this->db->or_where('role_name', $data);
+			$roles = $this->db->get('roles')->result();
 		}
-		$this->response($orders, 200);
+		$this->response($roles, 200);
 	}
 
 	// POST : Menambahkan Data
 	function index_post()
 	{
 		$data = array(
-			'order_id' => $this->post('order_id'),
-			'product_id' => $this->post('product_id'),
-			'qty' => $this->post('qty'),
-			'rate' => $this->post('rate'),
-			'ammount' => $this->post('ammount')
+			'role_name' => $this->post('role_name')
 		);
-		$insert = $this->db->insert('orders_item', $data);
+		$insert = $this->db->insert('roles', $data);
 		if ($insert) {
 			$this->response($data, 200);
 		} else {
@@ -47,14 +42,10 @@ class Orders_item extends REST_Controller
 		$id = $this->put('id');
 		$data = array(
 			'id' => $this->put('id'),
-			'order_id' => $this->put('order_id'),
-			'product_id' => $this->put('product_id'),
-			'qty' => $this->put('qty'),
-			'rate' => $this->put('rate'),
-			'ammount' => $this->put('ammount')
+			'role_name' => $this->put('role_name')
 		);
 		$this->db->where('id', $id);
-		$update = $this->db->update('orders_item', $data);
+		$update = $this->db->update('roles', $data);
 		if ($update) {
 			$this->response($data, 200);
 		} else {
@@ -67,7 +58,7 @@ class Orders_item extends REST_Controller
 	{
 		$id = $this->delete('id');
 		$this->db->where('id', $id);
-		$delete = $this->db->delete('orders_item');
+		$delete = $this->db->delete('roles');
 		if ($delete) {
 			$this->response(array('status' => 'success'), 201);
 		} else {
@@ -77,4 +68,4 @@ class Orders_item extends REST_Controller
 }
 
 
-/* End of file Orders_item.php */
+/* End of file Roles.php */

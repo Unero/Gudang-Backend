@@ -15,16 +15,15 @@
 			<div class="col">
 				<h2>API TEST MENU</h2>
 				<ul class="list-group">
-					<li class="list-group-item"><a href="<?= base_url();?>API/Users">Users</a></li>
-					<li class="list-group-item"><a href="<?= base_url();?>API/Company">Company</a></li>
 					<li class="list-group-item"><a href="<?= base_url();?>API/Brands">Brands</a></li>
-					<li class="list-group-item"><a href="<?= base_url();?>API/Groups">Groups</a></li>
-					<li class="list-group-item"><a href="<?= base_url();?>API/Attributes">Attributes</a></li>
 					<li class="list-group-item"><a href="<?= base_url();?>API/Category">Category</a></li>
-					<li class="list-group-item"><a href="<?= base_url();?>API/Orders">Orders</a></li>
-					<li class="list-group-item"><a href="<?= base_url();?>API/Products">Products</a></li>
+					<li class="list-group-item"><a href="<?= base_url();?>API/Company">Company</a></li>
+					<li class="list-group-item"><a href="<?= base_url();?>API/Items">Items</a></li>
+					<li class="list-group-item"><a href="<?= base_url();?>API/Roles">Roles</a></li>
+					<li class="list-group-item"><a href="<?= base_url();?>API/Rooms">Rooms</a></li>
+					<li class="list-group-item"><a href="<?= base_url();?>API/Shipping">Shipping</a></li>
 					<li class="list-group-item"><a href="<?= base_url();?>API/Stores">Stores</a></li>
-					<li class="list-group-item"><a href="<?= base_url();?>API/Reports">Reports</a></li>
+					<li class="list-group-item"><a href="<?= base_url();?>API/Users">Users</a></li>
 				</ul>
 			</div>
 		</div>

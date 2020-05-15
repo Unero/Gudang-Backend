@@ -14,7 +14,6 @@ class Stores extends REST_Controller {
         } else {
             $this->db->where('id', $data);
             $this->db->or_where('name', $data);
-            $this->db->or_where('active', $data);
             $stores = $this->db->get('stores')->result();
         }
         $this->response($stores, 200);
@@ -25,7 +24,7 @@ class Stores extends REST_Controller {
 	{
 		$data = array(
 			'name' => $this->post('name'),
-			'active' => $this->post('active')
+			'address' => $this->post('address')
 		);
 		$insert = $this->db->insert('stores', $data);
 		if ($insert) {
@@ -42,7 +41,7 @@ class Stores extends REST_Controller {
 		$data = array(
 			'id' => $this->put('id'),
 			'name' => $this->put('name'),
-			'active' => $this->put('active')
+			'address' => $this->put('address')
 		);
 		$this->db->where('id', $id);
 		$update = $this->db->update('stores', $data);

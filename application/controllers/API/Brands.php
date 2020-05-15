@@ -1,30 +1,35 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 require APPPATH . '/libraries/REST_Controller.php';
+
 use Restserver\Libraries\REST_Controller;
 
-class Brands extends REST_Controller {
-	
+class Brands extends REST_Controller
+{
+
 	// GET
-    function index_get() {
-        $data = $this->get('data');
-        if ($data == '') {
-            $brands = $this->db->get('brands')->result();
-        } else {
-            $this->db->where('id', $data);
-            $this->db->or_where('name', $data);
-            $brands = $this->db->get('brands')->result();
-        }
-        $this->response($brands, 200);
+	function index_get()
+	{
+		$data = $this->get('data');
+		if ($data == '') {
+			$brands = $this->db->get('brands')->result();
+		} else {
+			$this->db->where('id', $data);
+			$this->db->or_where('name', $data);
+			$brands = $this->db->get('brands')->result();
+		}
+		$this->response($brands, 200);
 	}
-	
+
 	// POST : Menambahkan Data
 	function index_post()
 	{
 		$data = array(
 			'name' => $this->post('name'),
-			'active' => $this->post('active')
+			'company' => $this->post('company'),
+			'address' => $this->post('address'),
+			'phone' => $this->post('phone')
 		);
 		$insert = $this->db->insert('brands', $data);
 		if ($insert) {
@@ -41,7 +46,9 @@ class Brands extends REST_Controller {
 		$data = array(
 			'id' => $this->put('id'),
 			'name' => $this->put('name'),
-			'active' => $this->put('active')
+			'company' => $this->put('company'),
+			'address' => $this->put('address'),
+			'phone' => $this->put('phone')
 		);
 		$this->db->where('id', $id);
 		$update = $this->db->update('brands', $data);
@@ -59,7 +66,7 @@ class Brands extends REST_Controller {
 		$this->db->where('id', $id);
 		$delete = $this->db->delete('brands');
 		if ($delete) {
-			$this->response(array('status' => 'success'), 201);
+			$this->response(array('status' => 'success'), 200);
 		} else {
 			$this->response(array('status' => 'fail', 502));
 		}

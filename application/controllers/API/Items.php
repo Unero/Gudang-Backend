@@ -5,7 +5,7 @@ require APPPATH . '/libraries/REST_Controller.php';
 
 use Restserver\Libraries\REST_Controller;
 
-class Attributes_value extends REST_Controller
+class Items extends REST_Controller
 {
 
 	// GET
@@ -13,23 +13,28 @@ class Attributes_value extends REST_Controller
 	{
 		$data = $this->get('data');
 		if ($data == '') {
-			$atr = $this->db->get('attribute_value')->result();
+			$products = $this->db->get('items')->result();
 		} else {
 			$this->db->where('id', $data);
-			$this->db->or_where('value', $data);
-			$atr = $this->db->get('attribute_value')->result();
+			$this->db->or_where('name', $data);
+			$products = $this->db->get('items')->result();
 		}
-		$this->response($atr, 200);
+		$this->response($products, 200);
 	}
 
 	// POST : Menambahkan Data
 	function index_post()
 	{
 		$data = array(
-			'value' => $this->post('value'),
-			'attribute_parent_id' => $this->post('attribute_parent_id')
+			'name' => $this->post('name'),
+			'price' => $this->post('price'),
+			'qty' => $this->post('qty'),
+			'description' => $this->post('description'),
+			'room_id' => $this->post('room_id'),
+			'brand_id' => $this->post('brand_id'),
+			'category_id' => $this->post('category_id')
 		);
-		$insert = $this->db->insert('attribute_value', $data);
+		$insert = $this->db->insert('items', $data);
 		if ($insert) {
 			$this->response($data, 200);
 		} else {
@@ -43,11 +48,16 @@ class Attributes_value extends REST_Controller
 		$id = $this->put('id');
 		$data = array(
 			'id' => $this->put('id'),
-			'value' => $this->put('value'),
-			'attribute_parent_id' => $this->put('attribute_parent_id')
+			'name' => $this->put('name'),
+			'price' => $this->put('price'),
+			'qty' => $this->put('qty'),
+			'description' => $this->put('description'),
+			'room_id' => $this->put('room_id'),
+			'brand_id' => $this->put('brand_id'),
+			'category_id' => $this->put('category_id')
 		);
 		$this->db->where('id', $id);
-		$update = $this->db->update('attribute_value', $data);
+		$update = $this->db->update('items', $data);
 		if ($update) {
 			$this->response($data, 200);
 		} else {
@@ -60,7 +70,7 @@ class Attributes_value extends REST_Controller
 	{
 		$id = $this->delete('id');
 		$this->db->where('id', $id);
-		$delete = $this->db->delete('attribute_value');
+		$delete = $this->db->delete('items');
 		if ($delete) {
 			$this->response(array('status' => 'success'), 201);
 		} else {
@@ -70,4 +80,4 @@ class Attributes_value extends REST_Controller
 }
 
 
-/* End of file Attributes_value.php */
+/* End of file Products.php */

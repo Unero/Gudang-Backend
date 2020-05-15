@@ -1,32 +1,36 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 require APPPATH . '/libraries/REST_Controller.php';
+
 use Restserver\Libraries\REST_Controller;
 
-class Groups extends REST_Controller {
-	
+class Rooms extends REST_Controller
+{
+
 	// GET
-    function index_get() {
-        $data = $this->get('data');
-        if ($data == '') {
-            $groups = $this->db->get('groups')->result();
-        } else {
-            $this->db->where('id', $data);
-            $this->db->or_where('group_name', $data);
-            $groups = $this->db->get('groups')->result();
-        }
-        $this->response($groups, 200);
+	function index_get()
+	{
+		$data = $this->get('data');
+		if ($data == '') {
+			$products = $this->db->get('rooms')->result();
+		} else {
+			$this->db->where('id', $data);
+			$this->db->or_where('name', $data);
+			$this->db->or_where('sku', $data);
+			$products = $this->db->get('rooms')->result();
+		}
+		$this->response($products, 200);
 	}
-	
+
 	// POST : Menambahkan Data
 	function index_post()
 	{
 		$data = array(
-			'group_name' => $this->post('group_name'),
-			'permission' => $this->post('permission')
+			'location' => $this->post('location'),
+			'desc' => $this->post('desc')
 		);
-		$insert = $this->db->insert('groups', $data);
+		$insert = $this->db->insert('rooms', $data);
 		if ($insert) {
 			$this->response($data, 200);
 		} else {
@@ -40,11 +44,11 @@ class Groups extends REST_Controller {
 		$id = $this->put('id');
 		$data = array(
 			'id' => $this->put('id'),
-			'group_name' => $this->put('group_name'),
-			'permission' => $this->put('permission')
+			'location' => $this->put('location'),
+			'desc' => $this->put('desc')
 		);
 		$this->db->where('id', $id);
-		$update = $this->db->update('groups', $data);
+		$update = $this->db->update('rooms', $data);
 		if ($update) {
 			$this->response($data, 200);
 		} else {
@@ -57,7 +61,7 @@ class Groups extends REST_Controller {
 	{
 		$id = $this->delete('id');
 		$this->db->where('id', $id);
-		$delete = $this->db->delete('groups');
+		$delete = $this->db->delete('rooms');
 		if ($delete) {
 			$this->response(array('status' => 'success'), 201);
 		} else {
@@ -67,4 +71,4 @@ class Groups extends REST_Controller {
 }
 
 
-/* End of file Groups.php */
+/* End of file Products.php */

@@ -23,8 +23,7 @@ class Category extends REST_Controller {
 	function index_post()
 	{
 		$data = array(
-			'name' => $this->post('name'),
-			'active' => $this->post('active')
+			'name' => $this->post('name')
 		);
 		$insert = $this->db->insert('categories', $data);
 		if ($insert) {
@@ -40,8 +39,7 @@ class Category extends REST_Controller {
 		$id = $this->put('id');
 		$data = array(
 			'id' => $this->put('id'),
-			'name' => $this->put('name'),
-			'active' => $this->put('active')
+			'name' => $this->put('name')
 		);
 		$this->db->where('id', $id);
 		$update = $this->db->update('categories', $data);
