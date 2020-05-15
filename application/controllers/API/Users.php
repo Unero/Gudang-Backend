@@ -22,7 +22,7 @@ class Users extends REST_Controller
 		} else {
 			$this->db->where('id', $data);
 			$this->db->or_where('username', $data);
-			$users = $this->db->get('absensi')->result();
+			$users = $this->db->get('users')->result();
 		}
 		$this->response($users, 200);
 	}
