@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 15, 2020 at 05:17 PM
+-- Generation Time: May 16, 2020 at 01:45 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.5
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `brands` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `brand_name` varchar(255) NOT NULL,
   `company` text DEFAULT NULL,
   `address` text DEFAULT NULL,
   `phone` varchar(50) DEFAULT NULL
@@ -39,9 +39,10 @@ CREATE TABLE `brands` (
 -- Dumping data for table `brands`
 --
 
-INSERT INTO `brands` (`id`, `name`, `company`, `address`, `phone`) VALUES
+INSERT INTO `brands` (`id`, `brand_name`, `company`, `address`, `phone`) VALUES
 (4, 'ABC Inc.', 'A', 'jljl', '0000'),
-(5, 'Supreme', 'S', 'kwm', '222');
+(5, 'Supreme', 'S', 'kwm', '222'),
+(7, 'Chocolatos Update', 'Wings Food', 'Jalan', '_____');
 
 -- --------------------------------------------------------
 
@@ -51,16 +52,17 @@ INSERT INTO `brands` (`id`, `name`, `company`, `address`, `phone`) VALUES
 
 CREATE TABLE `categories` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL
+  `category_name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `categories`
 --
 
-INSERT INTO `categories` (`id`, `name`) VALUES
+INSERT INTO `categories` (`id`, `category_name`) VALUES
 (4, 'Food'),
-(5, 'Home Tools');
+(5, 'Home Tools'),
+(8, 'Raw Update');
 
 -- --------------------------------------------------------
 
@@ -105,7 +107,8 @@ CREATE TABLE `items` (
 --
 
 INSERT INTO `items` (`id`, `name`, `price`, `qty`, `description`, `room_id`, `brand_id`, `category_id`) VALUES
-(2, 'Sapu', 15000, 250, 'Sapu', 4, 5, 5);
+(2, 'Sapu', 15000, 250, 'Sapu', 4, 5, 5),
+(4, 'Chocolatos Coklat_Update', 50000, 10, 'Jajan', 2, 5, 4);
 
 -- --------------------------------------------------------
 
@@ -123,7 +126,7 @@ CREATE TABLE `roles` (
 --
 
 INSERT INTO `roles` (`id`, `role_name`) VALUES
-(1, 'Administrator'),
+(1, 'Administrator_Aja'),
 (2, 'Owner'),
 (3, 'Staff');
 
@@ -147,7 +150,8 @@ INSERT INTO `rooms` (`id`, `location`, `desc`) VALUES
 (1, '1-A', 'Tempat makanan'),
 (2, '1-B', 'Tempat peralatan rumahan'),
 (3, '1-C', 'Tempat makanan beku'),
-(4, '1-D', 'Tempat perkakas');
+(4, '1-D', 'Tempat perkakas'),
+(6, '2-A', 'Updated Cuy');
 
 -- --------------------------------------------------------
 
@@ -170,7 +174,11 @@ CREATE TABLE `shipping` (
 --
 
 INSERT INTO `shipping` (`id`, `item_id`, `qty`, `type`, `store_id`, `user_id`, `time`) VALUES
-(1, 2, 100, 'Out', 3, 9, '2020-05-15 15:10:20');
+(1, 2, 100, 'Out', 3, 9, '2020-05-15 15:10:20'),
+(2, 2, 500, 'In', 3, 1, '0000-00-00 00:00:00'),
+(4, 2, 111, 'In', 3, 1, '0000-00-00 00:00:00'),
+(5, 4, 199, 'out', 3, 1, '0000-00-00 00:00:00'),
+(7, 4, 1, 'In', 3, 9, '2020-05-16 11:43:41');
 
 -- --------------------------------------------------------
 
@@ -180,7 +188,7 @@ INSERT INTO `shipping` (`id`, `item_id`, `qty`, `type`, `store_id`, `user_id`, `
 
 CREATE TABLE `stores` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `store_name` varchar(255) NOT NULL,
   `address` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -188,8 +196,7 @@ CREATE TABLE `stores` (
 -- Dumping data for table `stores`
 --
 
-INSERT INTO `stores` (`id`, `name`, `address`) VALUES
-(1, 'Mc Donald', 'Jalan Kayu Tangan'),
+INSERT INTO `stores` (`id`, `store_name`, `address`) VALUES
 (3, 'Toko Jaya Abadi', 'Jalan Bendu');
 
 -- --------------------------------------------------------
@@ -216,9 +223,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `password`, `name`, `email`, `phone`, `gender`, `address`, `role_id`) VALUES
 (1, 'admin', '$2y$10$ZrBk2zWOLhPAaOhncDBJv.pKAfhFYywahFQXY4NXDmhOcaRtLdAfS', 'admin', 'admin@admin.com', '12345678910', 'Male', 'jalan jalan', 1),
-(9, 'Unero', 'roooo', 'Unero', 'ram', '082237', 'Male', NULL, 2),
-(16, 'rin-ss', 'Ringgo', 'Rina', 'ringgo@gmail.com', '082239', 'Female', NULL, 3),
-(17, 'uxdox', 'uxdox', 'Unero', 'ramadhanbhg@gmail.com', '082236180971', 'Male', NULL, 3);
+(9, 'Coba Update', 'roooo', 'Unero', 'ram@gmail.com', '082237', 'Female', NULL, 2),
+(16, 'rin-ss', 'Ringgo', 'Rina', 'ringgo@gmail.com', '082239', 'Female', NULL, 3);
 
 --
 -- Indexes for dumped tables
@@ -293,19 +299,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `brands`
 --
 ALTER TABLE `brands`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -317,25 +323,25 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `rooms`
 --
 ALTER TABLE `rooms`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `shipping`
 --
 ALTER TABLE `shipping`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `stores`
 --
 ALTER TABLE `stores`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Constraints for dumped tables
