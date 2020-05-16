@@ -13,11 +13,21 @@ class Items extends REST_Controller
 	{
 		$data = $this->get('data');
 		if ($data == '') {
-			$products = $this->db->get('items')->result();
+			$this->db->select('items.id, items.`name`, items.price, items.qty, items.description, items.room_id, items.brand_id, items.category_id, rooms.location, rooms.`desc`, brands.brand_name, categories.category_name');
+			$this->db->from('items');
+			$this->db->join('rooms', 'items.room_id = rooms.id');
+			$this->db->join('brands', 'items.brand_id = brands.id');
+			$this->db->join('categories', 'items.category_id = categories.id');			
+			$products = $this->db->get()->result();
 		} else {
 			$this->db->where('id', $data);
 			$this->db->or_where('name', $data);
-			$products = $this->db->get('items')->result();
+			$this->db->select('items.id, items.`name`, items.price, items.qty, items.description, items.room_id, items.brand_id, items.category_id, rooms.location, rooms.`desc`, brands.brand_name, categories.category_name');
+			$this->db->from('items');
+			$this->db->join('rooms', 'items.room_id = rooms.id');
+			$this->db->join('brands', 'items.brand_id = brands.id');
+			$this->db->join('categories', 'items.category_id = categories.id');			
+			$products = $this->db->get()->result();
 		}
 		$this->response($products, 200);
 	}

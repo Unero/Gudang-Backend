@@ -18,11 +18,17 @@ class Users extends REST_Controller
 	{
 		$data = $this->get('data');
 		if ($data == '') {
-			$users = $this->db->get('users')->result();
+			$this->db->select('*');
+			$this->db->from('users');
+			$this->db->join('roles', 'users.role_id = roles.id');						
+			$users = $this->db->get()->result();
 		} else {
 			$this->db->where('id', $data);
 			$this->db->or_where('username', $data);
-			$users = $this->db->get('users')->result();
+			$this->db->select('*');
+			$this->db->from('users');
+			$this->db->join('roles', 'users.role_id = roles.id');						
+			$users = $this->db->get()->result();
 		}
 		$this->response($users, 200);
 	}

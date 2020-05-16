@@ -26,7 +26,7 @@ class Brands extends REST_Controller
 	function index_post()
 	{
 		$data = array(
-			'name' => $this->post('name'),
+			'brand_name' => $this->post('brand_name'),
 			'company' => $this->post('company'),
 			'address' => $this->post('address'),
 			'phone' => $this->post('phone')
@@ -45,7 +45,7 @@ class Brands extends REST_Controller
 		$id = $this->put('id');
 		$data = array(
 			'id' => $this->put('id'),
-			'name' => $this->put('name'),
+			'brand_name' => $this->put('brand_name'),
 			'company' => $this->put('company'),
 			'address' => $this->put('address'),
 			'phone' => $this->put('phone')

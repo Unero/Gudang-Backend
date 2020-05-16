@@ -13,10 +13,20 @@ class Shipping extends REST_Controller
 	{
 		$data = $this->get('data');
 		if ($data == '') {
-			$products = $this->db->get('shipping')->result();
+			$this->db->select('shipping.id, shipping.item_id, shipping.qty, shipping.type, shipping.store_id, shipping.user_id, shipping.time, items.`name`, stores.store_name, users.username');
+			$this->db->from('shipping');
+			$this->db->join('items', 'shipping.item_id = items.id');	
+			$this->db->join('stores', 'shipping.store_id = stores.id');
+			$this->db->join('users', 'shipping.user_id = users.id');
+			$products = $this->db->get()->result();
 		} else {
 			$this->db->where('id', $data);
-			$products = $this->db->get('shipping')->result();
+			$this->db->select('shipping.id, shipping.item_id, shipping.qty, shipping.type, shipping.store_id, shipping.user_id, shipping.time, items.`name`, stores.store_name, users.username');
+			$this->db->from('shipping');
+			$this->db->join('items', 'shipping.item_id = items.id');	
+			$this->db->join('stores', 'shipping.store_id = stores.id');
+			$this->db->join('users', 'shipping.user_id = users.id');
+			$products = $this->db->get()->result();
 		}
 		$this->response($products, 200);
 	}
