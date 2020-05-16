@@ -14,25 +14,6 @@ class Users extends REST_Controller
 		$this->load->database();
 	}
 
-	function login_post()
-	{
-		$data = array(
-			'username' => $this->post('username'),
-			'password' => $this->post('password')
-		);
-
-		$this->db->where('username', $data['username']);
-		$this->db->where('password', $data['password']);
-		$check = $this->db->get('users')->num_rows();
-
-		if ($check > 0) {		
-			$account = $this->db->get('users')->result();
-			$this->response($account, 200);
-		} else {
-			$this->response(array('status' => 'fail', 502));
-		}
-	}
-
 	// GET : Menampilkan seluruh Data
 	function index_get()
 	{
