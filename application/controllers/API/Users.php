@@ -8,10 +8,30 @@ use Restserver\Libraries\REST_Controller;
 class Users extends REST_Controller
 {
 
-	function __construct($config = 'rest') {
-        parent::__construct($config);
-        $this->load->database();
-    }
+	function __construct($config = 'rest')
+	{
+		parent::__construct($config);
+		$this->load->database();
+	}
+
+	function login_post()
+	{
+		$data = array(
+			'username' => $this->post('username'),
+			'password' => $this->post('password')
+		);
+
+		$this->db->where('username', $data['username']);
+		$this->db->where('password', $data['password']);
+		$check = $this->db->get('users')->num_rows();
+
+		if ($check > 0) {		
+			$account = $this->db->get('users')->result();
+			$this->response($account, 200);
+		} else {
+			$this->response(array('status' => 'fail', 502));
+		}
+	}
 
 	// GET : Menampilkan seluruh Data
 	function index_get()
@@ -20,14 +40,14 @@ class Users extends REST_Controller
 		if ($data == '') {
 			$this->db->select('*');
 			$this->db->from('users');
-			$this->db->join('roles', 'users.role_id = roles.id');						
+			$this->db->join('roles', 'users.role_id = roles.id');
 			$users = $this->db->get()->result();
 		} else {
 			$this->db->where('id', $data);
 			$this->db->or_where('username', $data);
 			$this->db->select('*');
 			$this->db->from('users');
-			$this->db->join('roles', 'users.role_id = roles.id');						
+			$this->db->join('roles', 'users.role_id = roles.id');
 			$users = $this->db->get()->result();
 		}
 		$this->response($users, 200);
