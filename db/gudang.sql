@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 16, 2020 at 01:45 PM
+-- Generation Time: May 17, 2020 at 08:18 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.5
 
@@ -42,7 +42,8 @@ CREATE TABLE `brands` (
 INSERT INTO `brands` (`id`, `brand_name`, `company`, `address`, `phone`) VALUES
 (4, 'ABC Inc.', 'A', 'jljl', '0000'),
 (5, 'Supreme', 'S', 'kwm', '222'),
-(7, 'Chocolatos Update', 'Wings Food', 'Jalan', '_____');
+(7, 'Chocolatos', 'Wings Food', 'Jalan', '_____'),
+(8, 'Indomie', 'PT Indofood CBP Sukses Makmur Tbk', 'Jalan Jakarta', '+22');
 
 -- --------------------------------------------------------
 
@@ -62,7 +63,8 @@ CREATE TABLE `categories` (
 INSERT INTO `categories` (`id`, `category_name`) VALUES
 (4, 'Food'),
 (5, 'Home Tools'),
-(8, 'Raw Update');
+(8, 'Raw Update'),
+(10, 'Instant Food');
 
 -- --------------------------------------------------------
 
@@ -107,8 +109,9 @@ CREATE TABLE `items` (
 --
 
 INSERT INTO `items` (`id`, `name`, `price`, `qty`, `description`, `room_id`, `brand_id`, `category_id`) VALUES
-(2, 'Sapu', 15000, 250, 'Sapu', 4, 5, 5),
-(4, 'Chocolatos Coklat_Update', 50000, 10, 'Jajan', 2, 5, 4);
+(4, 'Chocolatos Macha', 1000, 50000, 'Makanan ringan rasa Macha', 2, 5, 4),
+(5, 'Indomie Goreng', 2500, 5000, 'Indomie goreng original', 6, 8, 10),
+(6, 'Indomie Soto', 2500, 1000, 'Indomie rasa soto', 6, 8, 10);
 
 -- --------------------------------------------------------
 
@@ -151,7 +154,7 @@ INSERT INTO `rooms` (`id`, `location`, `desc`) VALUES
 (2, '1-B', 'Tempat peralatan rumahan'),
 (3, '1-C', 'Tempat makanan beku'),
 (4, '1-D', 'Tempat perkakas'),
-(6, '2-A', 'Updated Cuy');
+(6, '2-A', 'Lantai dua penyimpanan makanan instant');
 
 -- --------------------------------------------------------
 
@@ -174,11 +177,11 @@ CREATE TABLE `shipping` (
 --
 
 INSERT INTO `shipping` (`id`, `item_id`, `qty`, `type`, `store_id`, `user_id`, `time`) VALUES
-(1, 2, 100, 'Out', 3, 9, '2020-05-15 15:10:20'),
-(2, 2, 500, 'In', 3, 1, '0000-00-00 00:00:00'),
-(4, 2, 111, 'In', 3, 1, '0000-00-00 00:00:00'),
-(5, 4, 199, 'out', 3, 1, '0000-00-00 00:00:00'),
-(7, 4, 1, 'In', 3, 9, '2020-05-16 11:43:41');
+(8, 4, 100, 'out', 5, 1, '2020-05-17 05:36:34'),
+(9, 5, 5000, 'In', 5, 1, '2020-05-17 05:45:22'),
+(10, 6, 1, 'In', 3, 1, '2020-05-17 05:45:30'),
+(11, 4, 2, 'In', 3, 1, '2020-05-17 05:49:13'),
+(12, 4, 555, 'In', 3, 1, '2020-05-16 22:48:59');
 
 -- --------------------------------------------------------
 
@@ -197,7 +200,8 @@ CREATE TABLE `stores` (
 --
 
 INSERT INTO `stores` (`id`, `store_name`, `address`) VALUES
-(3, 'Toko Jaya Abadi', 'Jalan Bendu');
+(3, 'Toko Jaya Abadi', 'Jalan Bendu'),
+(5, 'Indomie JT-201222', 'Jalan Soehat');
 
 -- --------------------------------------------------------
 
@@ -222,9 +226,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `name`, `email`, `phone`, `gender`, `address`, `role_id`) VALUES
-(1, 'admin', '$2y$10$ZrBk2zWOLhPAaOhncDBJv.pKAfhFYywahFQXY4NXDmhOcaRtLdAfS', 'admin', 'admin@admin.com', '12345678910', 'Male', 'jalan jalan', 1),
-(9, 'Coba Update', 'roooo', 'Unero', 'ram@gmail.com', '082237', 'Female', NULL, 2),
-(16, 'rin-ss', 'Ringgo', 'Rina', 'ringgo@gmail.com', '082239', 'Female', NULL, 3);
+(1, 'admin', 'admin', 'Wildan', 'admin@admin.com', '12345678910', 'Male', 'Jalan Bendungan', 1),
+(9, 'unero', 'roooo', 'Unero', 'ram@gmail.com', '082237', 'Male', 'Jalan Pulosari 1', 2),
+(16, 'rina', 'Ringgo', 'Rina', 'ringgo@gmail.com', '082239', 'Female', NULL, 3),
+(20, 'tet', 'tete', 'tet', 'tet@gm.com', 'tet', 'Female', 'tete', 2);
 
 --
 -- Indexes for dumped tables
@@ -299,49 +304,49 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `brands`
 --
 ALTER TABLE `brands`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `rooms`
 --
 ALTER TABLE `rooms`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `shipping`
 --
 ALTER TABLE `shipping`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `stores`
 --
 ALTER TABLE `stores`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- Constraints for dumped tables
