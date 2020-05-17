@@ -30,6 +30,22 @@ class Company extends REST_Controller {
 		}
 	}
 
+	function information_get() {
+		$items = $this->db->get('items')->num_rows();
+		$shipping = $this->db->get('shipping')->num_rows();
+		$users = $this->db->get('users')->num_rows();
+		$stores = $this->db->get('stores')->num_rows();
+
+		$data = array(
+			'items' => $items,
+			'shipping' => $shipping,
+			'users' => $users,
+			'stores' => $stores
+		);
+
+        $this->response($data, 200);
+	}
+
 	// PUT: Mengupdate data
 	function index_put()
 	{

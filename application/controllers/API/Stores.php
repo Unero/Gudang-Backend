@@ -23,7 +23,7 @@ class Stores extends REST_Controller {
 	function index_post()
 	{
 		$data = array(
-			'name' => $this->post('name'),
+			'store_name' => $this->post('store_name'),
 			'address' => $this->post('address')
 		);
 		$insert = $this->db->insert('stores', $data);
@@ -40,7 +40,7 @@ class Stores extends REST_Controller {
 		$id = $this->put('id');
 		$data = array(
 			'id' => $this->put('id'),
-			'name' => $this->put('name'),
+			'store_name' => $this->put('store_name'),
 			'address' => $this->put('address')
 		);
 		$this->db->where('id', $id);
